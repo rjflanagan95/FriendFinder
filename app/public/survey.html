@@ -206,12 +206,40 @@
             $("#q9").val("");
             $("#q10").val("");
         });
+        
+        runFriendQuery();
+        checkFriends();
     });
 
     function runFriendQuery() {
         $.ajax({ url: "/api/friends", method: "GET" })
             .then(function(friendData) {
                 console.log(friendData);
+            });
+    }
+
+    function checkFriends() {
+        $.ajax({ url: "/api/friends", method: "GET" })
+            .then(function(friendData) {
+                var lastIndex = friendData.length - 1;
+                var lowestDiff = 10000000;
+                var bestMatch;
+                for (var i = 0; i < friendData.length - 1; i++) {
+                    var scoreDiff = 0;
+                    for (var j = 0; j < 10; j++) {
+                        scoreDiff += Math.abs(friendData[i].scores[j] - friendData[lastIndex].scores[j]);
+                    }
+                    if (scoreDiff < lowestDiff) {
+                        lowestDiff = scoreDiff;
+                        bestMatch = friendData[i];
+                    }
+                }
+                console.log("Best match: ");
+                console.log(bestMatch.friendName);
+                var compatScore = ((1 - (lowestDiff / 40)) * 100);
+                compatScore = Math.floor(compatScore);
+                console.log("Compatibility: " + compatScore + "%");
+                // console.log(JSON.stringify(bestMatch));
             });
     }
 
