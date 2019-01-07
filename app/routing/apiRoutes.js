@@ -1,30 +1,20 @@
-app.get("/api/friends", function(req, res) {
-    // var chosen = req.params.character;
-  
-    // console.log(chosen);
-  
-    // for (var i = 0; i < characters.length; i++) {
-    //     if (chosen === characters[i].routeName) {
-    //         return res.json(characters[i]);
-    //     }
-    // }
-  
-    // return res.json(false);
-});
-  
-  // Create New Characters - takes in JSON input
+var friendData = require("../data/friends");
+
+module.exports = function(app) {
+
+  app.get("/api/friends", function(req, res) {
+      res.json(friendData);
+  });
+
 app.post("/api/friends", function(req, res) {
-    // // req.body hosts is equal to the JSON post sent from the user
-    // // This works because of our body parsing middleware
-    // var newcharacter = req.body;
-
-    // // Using a RegEx Pattern to remove spaces from newCharacter
-    // // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-    // newcharacter.routeName = newcharacter.name.replace(/\s+/g, "").toLowerCase();
-
-    // console.log(newcharacter);
-
-    // characters.push(newcharacter);
-
-    // res.json(newcharacter);
+    friendData.push(req.body);
+    res.json(true);
 });
+
+//   app.post("/api/clear", function(req, res) {
+//     // Empty out the arrays of data
+//     friendData.length = [];
+
+//     res.json({ ok: true });
+//   });
+};
